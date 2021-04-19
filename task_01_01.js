@@ -4,29 +4,27 @@ const inputChar = prompt('Введите букву');
 const firstRow = 'мама мыла раму';
 const secondRow = 'собака друг человека';
 
-function getCountChar(row, char) {
-    let countChar = 0;
+function countedChar(row, char) {
+    let counted = 0;
 
     for (let i = 0; i < row.length; i++) {
-        if (char === row.charAt(i)) {
-            countChar += 1;
+        if (row.charAt(i) === char) {
+            counted++;
         }
     }
 
-    return countChar;
+    return counted;
 }
 
 function getRow(firstRow, secondRow, char) {
-    const countCharFirstRow = getCountChar(firstRow, char);
-    const countCharSecondRow = getCountChar(secondRow, char);
-    if (countCharFirstRow > countCharSecondRow) {
-        alert('В первой строке больше букв "' + char + '"');
+    const countCharFirstRow = countedChar(firstRow, char);
+    const countCharSecondRow = countedChar(secondRow, char);
+
+    if (countCharFirstRow === countCharSecondRow) {
+        return alert("Здесь одинаковое кол-во символа " + char);
     }
-    else if (countCharFirstRow < countCharSecondRow){
-        alert('Во второй строке больше букв "' + char + '"');
-    } else {
-        alert('В каждой строке одинакове число букв "' + char + '"');
-    }
+
+    return countCharFirstRow >= countCharSecondRow ? alert(firstRow) : alert(secondRow);
 }
 
 if (!inputChar) {
