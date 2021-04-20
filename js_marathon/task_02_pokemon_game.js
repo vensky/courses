@@ -1,20 +1,42 @@
-const $btn = document.getElementById('btn-kick');
-const $btnFatal = document.getElementById('btn-fatal');
+const $logs = querySlelctor('.logs');
+$logs.appendChild
+
+function $getElById(id) {
+    return document.getElementById(id);
+}
+
+const $btn = $getElById('btn-kick');
+const $btnFatal = $getElById('btn-fatal');
 
 const character = {
     name: 'Pikachu',
+    type: 'electric',
+    weakness: ['fighting', 'water', 'some'],
+    resisrance: ['steel'],
+    hp: {
+        current: 100,
+        total: 100,
+    },
     defaultHP: 100,
     damageHP: 100,
-    elHP: document.getElementById('health-character'),
-    elProgressbar:document.getElementById('progressbar-character'),
+    elHP: $getElById('health-character'),
+    elProgressbar: $getElById('progressbar-character'),
+    changeHP: changeHP,
+    renderHP: renderHP,
+    renderHPLife: renderHPLife,
+    renderProgressBarHP: renderProgressBarHP,
 }
 
 const enemy = {
     name: 'Charmander',
     defaultHP: 100,
     damageHP: 100,
-    elHP: document.getElementById('health-enemy'),
-    elProgressbar:document.getElementById('progressbar-enemy'),
+    elHP: $getElById('health-enemy'),
+    elProgressbar: $getElById('progressbar-enemy'),
+    changeHP: changeHP,
+    renderHP: renderHP,
+    renderHPLife: renderHPLife,
+    renderProgressBarHP: renderProgressBarHP,
 }
 
 /*$btn.addEventListener('click', function() {
@@ -31,34 +53,37 @@ kick($btn, 20);
 kick($btnFatal, 100);
 
 function init() {
-    renderHP(character);
-    renderHP(enemy);
+    character.renderHP();
+    enemy.renderHP();
 }
 
-function renderHP(person) {
-    renderHPLife(person);
-    renderProgressBarHP(person);
+function renderHP() {
+    this.renderHPLife();
+    this.renderProgressBarHP();
 }
 
-function renderHPLife(person) {
-    person.elHP.innerText = person.damageHP + '/' + person.defaultHP;
+function renderHPLife() {
+    this.elHP.innerText = this.damageHP + '/' + this.defaultHP;
 }
 
-function renderProgressBarHP(person) {
-    person.elProgressbar.style.width = person.damageHP + '%';
+function renderProgressBarHP() {
+    this.elProgressbar.style.width = this.damageHP + '%';
 }
 
 function changeHP(count, person) {
-    if (person.damageHP < count) {
-        person.damageHP = 0;{}
-        alert(person.name + ' проиграл!');
+    this.damageHP -= count;
+
+    const log = this === enemy ? generateLog(this, character) : generateLog(this, enemy);
+    console.log(log);
+
+    if (this.damageHP <= count) {
+        this.damageHP = 0;
+        alert(this.name + ' проиграл!');
         $btn.disabled = true;
         $btnFatal.disabled = true;
-    } else {
-        person.damageHP -= count;
     }
 
-    renderHP(person);
+    this.renderHP();
 }
 
 function random(num) {
@@ -67,9 +92,25 @@ function random(num) {
 
 function kick(btn, damage) {
     btn.addEventListener('click', function() {
-        changeHP(random(damage), character);
-        changeHP(random(damage), enemy);
+        character.changeHP(random(damage));
+        enemy.changeHP(random(damage));
     });
+}
+
+function generateLog(firstPerson, secondPerson) {
+    const logs = [
+    `${firstPerson.name} вспомнил что-то важное, но неожиданно ${secondPerson.name}, не помня себя от испуга, ударил в предплечье врага.`,
+    `${firstPerson.name} поперхнулся, и за это ${secondPerson.name} с испугу приложил прямой удар коленом в лоб врага.`,
+    `${firstPerson.name} забылся, но в это время наглый ${secondPerson.name}, приняв волевое решение, неслышно подойдя сзади, ударил.`,
+    `${firstPerson.name} пришел в себя, но неожиданно ${secondPerson.name} случайно нанес мощнейший удар.`,
+    `${firstPerson.name} поперхнулся, но в это время ${secondPerson.name} нехотя раздробил кулаком \<вырезанно цензурой\> противника.`,
+    `${firstPerson.name} удивился, а ${secondPerson.name} пошатнувшись влепил подлый удар.`,
+    `${firstPerson.name} высморкался, но неожиданно ${secondPerson.name} провел дробящий удар.`,
+    `${firstPerson.name} пошатнулся, и внезапно наглый ${secondPerson.name} беспричинно ударил в ногу противника`,
+    `${firstPerson.name} расстроился, как вдруг, неожиданно ${secondPerson.name} случайно влепил стопой в живот соперника.`,
+    `${firstPerson.name} пытался что-то сказать, но вдруг, неожиданно ${secondPerson.name} со скуки, разбил бровь сопернику.`
+];
+    return logs[random(logs.length) - 1];
 }
 
 init();
