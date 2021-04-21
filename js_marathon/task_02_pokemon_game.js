@@ -1,5 +1,4 @@
-const $logs = querySlelctor('.logs');
-$logs.appendChild
+const $logs = document.querySelector('.logs');
 
 function $getElById(id) {
     return document.getElementById(id);
@@ -39,16 +38,6 @@ const enemy = {
     renderProgressBarHP: renderProgressBarHP,
 }
 
-/*$btn.addEventListener('click', function() {
-    changeHP(random(20), character);
-    changeHP(random(20), enemy);
-});*/
-
-/*$btnFatal.addEventListener('click', function() {
-    changeHP(random(20*3), character);
-    changeHP(random(20*3), enemy);
-});*/
-
 kick($btn, 20);
 kick($btnFatal, 100);
 
@@ -73,8 +62,11 @@ function renderProgressBarHP() {
 function changeHP(count, person) {
     this.damageHP -= count;
 
-    const log = this === enemy ? generateLog(this, character) : generateLog(this, enemy);
-    console.log(log);
+
+        log = this === enemy ? generateLog(this, character) : generateLog(this, enemy);
+
+
+
 
     if (this.damageHP <= count) {
         this.damageHP = 0;
@@ -110,7 +102,12 @@ function generateLog(firstPerson, secondPerson) {
     `${firstPerson.name} расстроился, как вдруг, неожиданно ${secondPerson.name} случайно влепил стопой в живот соперника.`,
     `${firstPerson.name} пытался что-то сказать, но вдруг, неожиданно ${secondPerson.name} со скуки, разбил бровь сопернику.`
 ];
-    return logs[random(logs.length) - 1];
+    /*return logs[random(logs.length) - 1];*/
+    const $p = document.createElement('p');
+    const randomLogs = logs[random(logs.length) - 1]
+
+        $p.innerText = randomLogs;
+        $logs.insertBefore($p, $logs.children[0]);
 }
 
 init();
