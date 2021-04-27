@@ -39,7 +39,7 @@ const enemy = {
 }
 
 kick($btn, 20);
-kick($btnFatal, 100);
+kick($btnFatal, 50);
 
 function init() {
     character.renderHP();
@@ -83,10 +83,18 @@ function random(num) {
 }
 
 function kick(btn, damage) {
+    let clickCount = 0;
+
     btn.addEventListener('click', function() {
         character.changeHP(random(damage));
         enemy.changeHP(random(damage));
+        if (clickCount <= 6) {
+            clickCount++;
+        }
+
+        console.log(clickCount)
     });
+  /*  console.log(clickCount);*/
 }
 
 function generateLog(firstPerson, secondPerson) {
