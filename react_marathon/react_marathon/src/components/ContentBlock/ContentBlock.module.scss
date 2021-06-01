@@ -39,3 +39,8 @@
     font-size: 20px;
     line-height: 1.55;
 }
+
+.cardList {
+    display: flex;
+    flex-wrap: wrap;
+}
