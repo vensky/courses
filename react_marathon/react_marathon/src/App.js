@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import HeaderBlock from './components/HeaderBlock/HeaderBlock';
+/*import HeaderBlock from './components/HeaderBlock/HeaderBlock';*/
 import ContentBlock from './components/ContentBlock/ContentBlock';
-import FooterBlock from './components/FooterBlock/FooterBlock';
+/*import FooterBlock from './components/FooterBlock/FooterBlock';
 import Header from './components/Header/Header';
-import Paragraph from './components/Paragraph/Paragraph';
+import Paragraph from './components/Paragraph/Paragraph';*/
 import Card from './components/Card/Card';
 
 import wordsList from './wordsList';
 
-const App = () => {
-    return (
-        <>
-            <HeaderBlock>
-                <Header>
-                    Время учить слова онлайн
-                </Header>
-                <Paragraph>
-                    Используйте карточки для запоминания и пополняйте активный словарный запапс.
-                </Paragraph>
-            </HeaderBlock>
+class App extends Component {
+    state = {
+        wordArr: wordsList,
+    }
+
+    handleDeletedItem = (id) => {
+        this.setState( ({wordArr}) => {
+            const idx = wordArr.findIndex((item) => item.id === id);
+            const newArr = [
+                ...wordArr.slice(0, idx),
+                ...wordArr.slice(idx + 1)
+                ];
+
+            return {
+                    wordArr: newArr,
+                };
+        })
+    }
+
+    render() {
+        const { wordArr } = this.state;
+
+        return (
             <ContentBlock>
-                {wordsList.map(({ eng, rus }) => <Card eng={eng} rus={rus} />)}
+                {
+                    wordArr.map(({ eng, rus, id }) => (
+                        <Card key={id} eng={eng} rus={rus} id={id} onDeleted={ this.handleDeletedItem } />
+                    ))
+                }
             </ContentBlock>
-            {/*<FooterBlock  title="Footer" />*/}
-        </>
-    )
+        )
+    }
 }
 
 export default App;
